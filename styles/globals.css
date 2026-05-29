@@ -1,0 +1,272 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  /*
+   * Body register is set in serif (Source Serif 4) — Berkshire annual letter
+   * voice. Distinct from sans-serif sibling brands. Display still rides
+   * Cormorant Garamond for the headline pop.
+   */
+  body {
+    @apply bg-ivory text-ink antialiased font-body;
+    font-feature-settings: "ss01", "cv11", "lnum";
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif text-burgundy;
+    font-feature-settings: "lnum";
+    letter-spacing: -0.025em;
+    font-weight: 500;
+  }
+  h1 { @apply tracking-tightest; }
+  ::selection { @apply bg-burgundy text-ivory; }
+
+  /*
+   * Editorial link underline — burgundy hairline that grows from the left on
+   * hover. Slow, deliberate. Distinct from any geometric/sans treatment.
+   * Skipped for buttons + links that opt out via no-underline.
+   */
+  a:not(.no-underline):not(.btn-primary):not(.btn-secondary):not(.btn-ghost):not(.btn-bronze):not(.btn-gold) {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 600ms cubic-bezier(0.22, 1, 0.36, 1);
+    padding-bottom: 1px;
+  }
+  a:not(.no-underline):not(.btn-primary):not(.btn-secondary):not(.btn-ghost):not(.btn-bronze):not(.btn-gold):hover {
+    background-size: 100% 1px;
+  }
+}
+
+@layer components {
+  .container-prose {
+    @apply mx-auto max-w-3xl px-6;
+  }
+  .container-wide {
+    @apply mx-auto max-w-7xl px-6 sm:px-8;
+  }
+
+  /* Buttons - heritage operator confidence */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-burgundy text-ivory px-7 py-3.5 min-h-[44px] text-[12.5px] tracking-[0.18em] uppercase font-medium hover:bg-burgundy-600 transition-colors no-underline;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 border border-burgundy/40 text-burgundy px-7 py-3.5 min-h-[44px] text-[12.5px] tracking-[0.18em] uppercase font-medium hover:bg-burgundy hover:text-ivory hover:border-burgundy transition-colors no-underline;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 text-burgundy px-3 py-2 min-h-[44px] text-[12.5px] tracking-[0.18em] uppercase font-medium hover:text-bronze-700 transition-colors no-underline;
+  }
+  .btn-bronze {
+    @apply inline-flex items-center justify-center gap-2 bg-bronze text-ivory px-7 py-3.5 min-h-[44px] text-[12.5px] tracking-[0.18em] uppercase font-medium hover:bg-bronze-600 transition-colors no-underline;
+  }
+  /* Backwards-compatibility alias for prior gold class */
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 bg-bronze text-ivory px-7 py-3.5 min-h-[44px] text-[12.5px] tracking-[0.18em] uppercase font-medium hover:bg-bronze-600 transition-colors no-underline;
+  }
+
+  /*
+   * Eyebrow label - tracked SMALL CAPS with thin burgundy rule.
+   * Replaces the prior bronze hairline with burgundy for a more
+   * thesis/letter feel (Loews / Fairfax annual-letter aesthetic).
+   */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.28em] text-burgundy font-medium;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply h-px w-10 bg-burgundy/70;
+  }
+  .eyebrow-plain {
+    @apply text-[11px] uppercase tracking-[0.28em] text-burgundy font-medium;
+  }
+
+  /*
+   * Numbered section mark - § + number, used in place of "Chapter 01".
+   * Thesis / shareholder-letter signal.
+   */
+  .section-mark {
+    @apply inline-flex items-baseline gap-2 text-[11px] uppercase tracking-[0.28em] text-burgundy font-medium;
+  }
+  .section-mark .section-mark-num {
+    @apply font-serif italic text-bronze-700 not-italic-mark;
+    font-style: italic;
+    font-size: 1.05em;
+    letter-spacing: 0;
+  }
+
+  /* Display headlines - editorial Cormorant. Bumped sizes for heritage feel. */
+  .display-1 {
+    @apply font-serif text-burgundy text-[52px] sm:text-[68px] lg:text-[88px] leading-[1.02] tracking-tightest;
+    font-weight: 500;
+  }
+  .display-2 {
+    @apply font-serif text-burgundy text-[40px] sm:text-[52px] lg:text-[64px] leading-[1.04] tracking-tight;
+    font-weight: 500;
+  }
+  .display-3 {
+    @apply font-serif text-burgundy text-[30px] sm:text-[38px] lg:text-[46px] leading-[1.10] tracking-tight;
+    font-weight: 500;
+  }
+
+  /* Small-caps eyebrow with extra tracking - private-bank stationery feel. */
+  .eyebrow-caps {
+    @apply text-[11px] uppercase font-medium text-burgundy;
+    letter-spacing: 0.32em;
+    font-variant-caps: all-small-caps;
+  }
+
+  /* Card surface */
+  .surface {
+    @apply bg-ivory border border-line/80 transition-colors;
+  }
+  .surface-hover {
+    @apply hover:border-burgundy/40 hover:shadow-heritage-sm;
+  }
+  .surface-cream {
+    @apply bg-cream border border-line/80;
+  }
+  /* Parchment surface — paper-texture cream. Used sparingly. */
+  .surface-parchment {
+    @apply border border-line/70;
+    background-color: #F8F4EC;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(140, 106, 63, 0.05), transparent 60%),
+      radial-gradient(circle at 80% 90%, rgba(58, 19, 26, 0.04), transparent 65%);
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-20 sm:py-24 lg:py-32;
+  }
+  .section-tight {
+    @apply py-16 sm:py-20;
+  }
+
+  /* Hairline rules */
+  .hairline { @apply border-t border-line; }
+  .hairline-b { @apply border-b border-line; }
+
+  /*
+   * Body type — set in Source Serif 4. Higher contrast, slightly looser
+   * leading than the prior sans register (annual letter cadence).
+   */
+  .body-lg {
+    @apply text-lg leading-[1.72] text-charcoal-500 font-body;
+  }
+  .body-md {
+    @apply text-base leading-[1.72] text-charcoal-500 font-body;
+  }
+  .body-mute {
+    @apply text-base leading-[1.72] text-ink-mute font-body;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .text-pretty { text-wrap: pretty; }
+
+  /* Subtle paper grain - warmer for heritage feel */
+  .grain {
+    position: relative;
+  }
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.85'/></svg>");
+  }
+
+  /*
+   * Parchment paper grain — used on /thesis/ chapter dividers and editorial
+   * surfaces to give the annual-letter feel.
+   */
+  .parchment-grain {
+    background-color: #F8F4EC;
+    position: relative;
+  }
+  .parchment-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.5 0.6' numOctaves='3' stitchTiles='stitch' seed='3'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.42  0 0 0 0 0.25  0 0 0 0.85 0'/></filter><rect width='100%25' height='100%25' filter='url(%23p)'/></svg>");
+  }
+
+  /* Engraved hairline - decorative double-rule */
+  .rule-engraved {
+    border-top: 1px solid #d4c9b5;
+    border-bottom: 1px solid #d4c9b5;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  /* Sticky mobile CTA reserves space at bottom */
+  @media (max-width: 1023px) {
+    body { padding-bottom: 60px; }
+  }
+
+  /* Heritage seal frame */
+  .frame-bronze, .frame-gold {
+    @apply border border-bronze/40;
+    box-shadow:
+      inset 0 0 0 1px rgba(140, 106, 63, 0.08),
+      0 30px 60px -40px rgba(58, 19, 26, 0.45);
+  }
+
+  /* Marquee track */
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee 60s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee-mask {
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+
+  /* Number column indicator - heritage italic */
+  .num-mark {
+    @apply font-serif italic text-bronze-700;
+    line-height: 1;
+  }
+
+  /*
+   * Drop cap for editorial body copy.
+   * Rothenbury runs serif body — drop cap renders larger, with burgundy fill.
+   * Mobile: dialed back to keep prose legible at 390px.
+   */
+  .dropcap::first-letter {
+    @apply font-serif text-burgundy;
+    font-size: 4.6em;
+    line-height: 0.82;
+    float: left;
+    margin: 0.06em 0.12em -0.05em 0;
+    font-weight: 500;
+    padding-right: 0.04em;
+  }
+  @media (max-width: 640px) {
+    .dropcap::first-letter {
+      font-size: 3.6em;
+      line-height: 0.85;
+      margin: 0.06em 0.10em -0.05em 0;
+    }
+  }
+
+  /* Pull-quote burgundy left rule (editorial) */
+  .quote-rule {
+    border-left: 2px solid #5A1A2B;
+    padding-left: 1.5rem;
+  }
+}
