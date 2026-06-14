@@ -9,7 +9,6 @@ type Props = {
 
 export default function Logo({ className, variant = "navy", monogramOnly = false }: Props) {
   const ink = variant === "navy" ? "text-navy" : "text-bone";
-  const accent = variant === "navy" ? "text-bronze-700" : "text-bronze-200";
 
   return (
     <Link
@@ -35,7 +34,7 @@ export default function Logo({ className, variant = "navy", monogramOnly = false
       {!monogramOnly && (
         <span className="leading-none">
           <span className={cn("block font-serif text-[18px] tracking-tight", ink)}>
-            Rothenbury <span className={accent}>Group</span>
+            Rothenbury <span className={ink}>Group</span>
           </span>
           <span
             className={cn(
