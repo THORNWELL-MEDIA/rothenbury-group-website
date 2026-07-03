@@ -116,14 +116,30 @@ function renderBody(body: string) {
 }
 
 function renderInline(text: string) {
-  // Split on **bold** segments while preserving them.
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  // Split on **bold** and [text](url) segments while preserving them.
+  const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g);
   return parts.map((part, idx) => {
     if (/^\*\*[^*]+\*\*$/.test(part)) {
       return (
         <strong key={idx} className="font-semibold text-navy">
           {part.slice(2, -2)}
         </strong>
+      );
+    }
+    const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (linkMatch) {
+      const [, anchor, href] = linkMatch;
+      if (href.startsWith("/")) {
+        return (
+          <Link key={idx} href={href} className="text-bronze-700 underline underline-offset-2 hover:text-burgundy transition-colors">
+            {anchor}
+          </Link>
+        );
+      }
+      return (
+        <a key={idx} href={href} target="_blank" rel="noopener noreferrer" className="text-bronze-700 underline underline-offset-2 hover:text-burgundy transition-colors">
+          {anchor}
+        </a>
       );
     }
     return <span key={idx}>{part}</span>;
