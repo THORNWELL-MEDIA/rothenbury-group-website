@@ -35,12 +35,16 @@ export const metadata = {
 const REGIONS = [
   {
     label: "United States",
-    cities: "New York · Boston · Atlanta · Miami · Chicago · Dallas · Los Angeles · Phoenix · Austin · Denver",
+    accent: "bronze" as const,
+    anchor: "Anchored in New York",
+    cities: ["New York", "Boston", "Atlanta", "Miami", "Chicago", "Dallas", "Los Angeles", "Phoenix", "Austin", "Denver"],
     note: "Operating partners across staffing, media, real estate, and services.",
   },
   {
     label: "Canada",
-    cities: "Toronto · Vancouver · Montreal · Calgary",
+    accent: "burgundy" as const,
+    anchor: "Office of the Group, Toronto",
+    cities: ["Toronto", "Vancouver", "Montreal", "Calgary"],
     note: "Operating partners across real estate, contracting, and services.",
   },
 ];
@@ -105,16 +109,16 @@ export default function HomePage() {
       />
 
       {/* HERO */}
-      <section className="relative bg-navy text-bone overflow-hidden grain">
+      <section className="relative bg-navy text-bone overflow-hidden grain flex items-center min-h-[calc(100svh-84px)] lg:min-h-[calc(100svh-116px)]">
         <Image
           src={IMAGES.brandHero}
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover opacity-35"
+          className="object-cover opacity-45"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy/95 to-navy/70" />
+        <div className="absolute inset-0 bg-gradient-to-br from-navy via-navy/90 to-navy/50" />
         {/* Marble texture overlay - very subtle warm veining */}
         <div
           aria-hidden="true"
@@ -136,12 +140,12 @@ export default function HomePage() {
         />
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-bronze/50 to-transparent" />
 
-        <div className="container-wide relative pt-24 pb-20 sm:pt-32 sm:pb-28 lg:pt-40 lg:pb-36">
-          <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr] items-end">
-            <div className="max-w-4xl">
+        <div className="container-wide relative w-full py-7 sm:py-9">
+          <div className="grid gap-8 lg:gap-10 lg:grid-cols-[1.7fr_1fr] items-end lg:items-center min-w-0">
+            <div className="max-w-4xl min-w-0">
               <div className="flex flex-wrap items-center gap-3">
-                <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] text-bronze-200">
-                  <span className="h-px w-10 bg-bronze-300/80" />
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.24em] text-bronze-200">
+                  <span className="h-px w-8 sm:w-10 bg-bronze-300/80" />
                   Holding Group · Operating Across North America
                 </div>
                 <span className="inline-flex items-center gap-2 px-3 py-1 border border-bronze-200/35 bg-walnut/30 text-[10px] uppercase tracking-[0.22em] text-bronze-200 font-medium">
@@ -149,15 +153,15 @@ export default function HomePage() {
                   Office of the Group · Toronto · New York
                 </span>
               </div>
-              <h1 className="mt-7 font-serif text-ivory text-[44px] sm:text-[68px] lg:text-[112px] leading-[1.0] sm:leading-[0.96] tracking-tightest text-balance">
+              <h1 className="mt-4 font-serif text-ivory text-[34px] sm:text-[54px] lg:text-[68px] leading-[1.03] sm:leading-[0.98] tracking-tightest text-balance">
                 Permanent capital. <span className="italic text-bronze-200">Operating partnership.</span> Multigenerational ownership.
               </h1>
-              <p className="mt-10 text-lg sm:text-xl text-ivory/95 max-w-2xl leading-relaxed font-serif italic">
+              <p className="mt-4 text-[15px] sm:text-base lg:text-lg text-ivory/95 max-w-2xl leading-relaxed font-serif italic">
                 A privately held diversified holding company. Patient equity and shared
                 infrastructure for operator-led businesses across the United States and
                 Canada. Held for compounding, not for resale.
               </p>
-              <div className="mt-12 flex flex-col sm:flex-row gap-3">
+              <div className="mt-5 sm:mt-6 flex flex-col sm:flex-row gap-3">
                 <Link href="/contact/" className="btn-bronze group">
                   Request a private introduction
                   <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} />
@@ -172,7 +176,7 @@ export default function HomePage() {
             </div>
 
             {/* Hero meta panel */}
-            <aside className="border-l border-bone/15 pl-8 hidden lg:block">
+            <aside className="hidden lg:block border border-bronze-200/20 bg-walnut/25 backdrop-blur-sm px-8 py-9">
               <div className="text-[10px] uppercase tracking-[0.28em] text-bronze-200">
                 Operating Footprint
               </div>
@@ -256,7 +260,7 @@ export default function HomePage() {
 
           <SectorGrid />
         </div>
-        <Flourish className="mt-24" />
+        <Flourish className="mt-10" />
       </section>
 
       {/* HOLDING HORIZON CHART */}
@@ -264,7 +268,7 @@ export default function HomePage() {
         <div className="container-wide">
           <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] items-end">
             <div>
-              <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] text-bronze-200 font-medium">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.24em] text-bronze-200 font-medium">
                 <span className="h-px w-8 bg-bronze-200/70" />
                 Holding horizon
               </div>
@@ -279,35 +283,35 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-14">
+          <div className="mt-8">
             <HoldingHorizonChart />
           </div>
         </div>
       </section>
 
       {/* NORTH AMERICAN FOOTPRINT */}
-      <section className="section bg-bone">
+      <section className="py-14 sm:py-16 lg:py-14 bg-bone">
         <div className="container-wide">
-          <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] items-end">
+          <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr] items-end">
             <div>
               <div className="eyebrow">North American footprint</div>
-              <h2 className="mt-5 display-2 text-balance">
+              <h2 className="mt-3 font-serif font-medium text-burgundy text-[32px] sm:text-[42px] lg:text-[50px] leading-[1.05] tracking-tight text-balance">
                 One holding company. Two operating regions.
               </h2>
             </div>
-            <p className="body-lg max-w-xl">
+            <p className="text-base lg:text-lg leading-relaxed text-charcoal-500 font-body max-w-xl">
               Operating partners are anchored across the United States and Canada,
               coordinated between Toronto and New York under a single parent-level
               governance standard.
             </p>
           </div>
 
-          <div className="mt-14 grid gap-10 lg:grid-cols-[1.4fr_1fr] items-stretch">
+          <div className="mt-7 grid gap-8 lg:grid-cols-[1.35fr_1fr] items-stretch">
             {/* Map graphic */}
-            <div className="relative bg-cream/40 border border-line aspect-[5/3] overflow-hidden">
+            <div className="relative bg-bone border border-line aspect-[5/3] overflow-hidden">
               <PanAmericanMap />
               {/* Legend */}
-              <div className="absolute bottom-5 left-5 right-5 flex flex-wrap items-center gap-x-5 gap-y-2 bg-bone/85 backdrop-blur px-4 py-3 border border-line text-[10px] uppercase tracking-[0.18em] text-ink-soft">
+              <div className="absolute bottom-4 left-4 right-4 flex flex-wrap items-center gap-x-5 gap-y-2 bg-bone/90 backdrop-blur px-4 py-2.5 border border-line text-[10px] uppercase tracking-[0.18em] text-ink-soft">
                 <span className="inline-flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-burgundy" /> Canada hub
                 </span>
@@ -322,18 +326,40 @@ export default function HomePage() {
 
             {/* Region cards */}
             <div className="grid gap-px bg-line border border-line content-stretch">
-              {REGIONS.map((r) => (
-                <div key={r.label} className="bg-bone p-7 lg:p-8">
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-bronze-700 font-mono">
-                    Region
+              {REGIONS.map((r) => {
+                const accentText = r.accent === "bronze" ? "text-bronze-700" : "text-burgundy";
+                const accentBar = r.accent === "bronze" ? "bg-bronze" : "bg-burgundy";
+                return (
+                  <div key={r.label} className="relative bg-bone p-5 lg:p-6">
+                    <span className={`absolute left-0 top-0 h-full w-[3px] ${accentBar}`} aria-hidden="true" />
+                    <div className="flex items-center justify-between">
+                      <div className={`text-[10px] uppercase tracking-[0.24em] font-mono ${accentText}`}>
+                        Region
+                      </div>
+                      <div className="text-[11px] uppercase tracking-[0.18em] text-ink-mute">
+                        {r.cities.length} cities
+                      </div>
+                    </div>
+                    <div className="mt-2 flex items-baseline gap-3">
+                      <h3 className="font-serif text-2xl lg:text-3xl text-navy">{r.label}</h3>
+                    </div>
+                    <p className={`mt-1 text-[11px] uppercase tracking-[0.16em] ${accentText}`}>{r.anchor}</p>
+                    <div className="mt-3.5 flex flex-wrap gap-1.5">
+                      {r.cities.map((c) => (
+                        <span
+                          key={c}
+                          className="px-2.5 py-[3px] border border-line bg-cream/50 text-[12px] tracking-wide text-ink-soft"
+                        >
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="mt-3.5 pt-3.5 border-t border-line text-[12.5px] text-ink-soft italic leading-relaxed">
+                      {r.note}
+                    </p>
                   </div>
-                  <h3 className="mt-3 font-serif text-3xl text-navy">{r.label}</h3>
-                  <p className="mt-3 text-sm text-ink-soft leading-relaxed">{r.cities}</p>
-                  <p className="mt-4 pt-4 border-t border-line text-[13px] text-ink-soft italic">
-                    {r.note}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -343,7 +369,7 @@ export default function HomePage() {
       <section className="section bg-burgundy text-ivory grain border-y border-walnut">
         <div className="container-wide">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] text-bronze-200 font-medium">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.24em] text-bronze-200 font-medium">
               <span className="h-px w-8 bg-bronze-200/70" />
               Why this exists
             </div>
@@ -358,9 +384,9 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-16 grid gap-px bg-walnut/60 sm:grid-cols-2 border border-walnut/60">
+          <div className="mt-10 grid gap-px bg-walnut/60 sm:grid-cols-2 border border-walnut/60">
             {PROBLEMS.map(({ Icon, problem, diagnosis, fix }, idx) => (
-              <article key={problem} className="bg-burgundy p-8 lg:p-10">
+              <article key={problem} className="bg-burgundy p-7 lg:p-8">
                 <div className="flex items-center justify-between gap-4">
                   <div className="grid place-items-center w-11 h-11 border border-bronze-300/40 text-bronze-200 shrink-0">
                     <Icon className="w-5 h-5" strokeWidth={1.4} />
@@ -401,11 +427,11 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-14">
+          <div className="mt-8">
             <OperatingSupportStack />
           </div>
         </div>
-        <Flourish className="mt-24" />
+        <Flourish className="mt-10" />
       </section>
 
       {/* HERITAGE EDITORIAL BAND */}
@@ -418,10 +444,10 @@ export default function HomePage() {
           className="object-cover opacity-25"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-walnut via-walnut/85 to-walnut/55" />
-        <div className="container-wide relative py-24 lg:py-32">
+        <div className="container-wide relative py-16 lg:py-20">
           <div className="grid gap-14 lg:grid-cols-[1.1fr_1fr] items-center">
             <div>
-              <div className="inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] text-bronze-200 font-medium">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.24em] text-bronze-200 font-medium">
                 <span className="h-px w-8 bg-bronze-200/70" />
                 Built for permanence
               </div>
@@ -473,7 +499,7 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          <Flourish className="mt-24" />
+          <Flourish className="mt-10" />
         </div>
       </section>
 

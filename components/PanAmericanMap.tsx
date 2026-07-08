@@ -219,12 +219,12 @@ export default function PanAmericanMap({
           <path
             key={c.iso}
             d={c.d}
-            fill="#F2EBDD"
+            fill={c.iso === "MEX" ? "#E9DCC2" : "#E2D2AE"}
             stroke="#2F3033"
-            strokeWidth={0.5}
+            strokeWidth={0.8}
             strokeLinejoin="round"
             strokeLinecap="round"
-            opacity={c.iso === "MEX" ? 0.85 : 1}
+            opacity={c.iso === "MEX" ? 0.7 : 1}
           />
         ))}
       </g>
@@ -387,18 +387,19 @@ export default function PanAmericanMap({
             <circle
               cx={m.x}
               cy={m.y}
-              r="4"
+              r="5"
               fill="#5A1A2B"
-              stroke="#B89968"
-              strokeWidth="0.6"
+              stroke="#E2D2AE"
+              strokeWidth="1.1"
             />
             <text
-              x={m.x + 7}
-              y={m.y + 3}
-              fontSize="9"
+              x={m.x + 8}
+              y={m.y + 3.5}
+              fontSize="10.5"
               fontFamily="var(--font-serif), 'Source Serif 4', Georgia, serif"
-              fill="rgba(47, 48, 51, 0.78)"
-              letterSpacing="0.4"
+              fill="#241712"
+              fontWeight="500"
+              letterSpacing="0.3"
             >
               {m.label}
             </text>

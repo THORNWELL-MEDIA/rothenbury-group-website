@@ -12,7 +12,6 @@ const STATIC_PATHS = [
   "/portfolio/",
   "/locations/",
   "/careers/",
-  "/positions/",
   "/insights/",
   "/contact/",
   "/privacy/",
@@ -22,11 +21,25 @@ const STATIC_PATHS = [
   "/reviews/",
 ];
 
+// Sitelinks-priority targets per Sitelinks engineering 2026-06-02.
+// Portfolio / About / Leadership / Insights / Contact at 0.9.
+const SITELINKS_TARGETS = new Set([
+  "/portfolio/",
+  "/about/",
+  "/leadership/",
+  "/insights/",
+  "/contact/",
+]);
+
 export async function GET() {
   const today = new Date().toISOString().split("T")[0];
 
   const urls = [
-    ...STATIC_PATHS.map((path) => ({ loc: `${SITE}${path}`, changefreq: "monthly", priority: path === "/" ? "1.0" : "0.8" })),
+    ...STATIC_PATHS.map((path) => ({
+      loc: `${SITE}${path}`,
+      changefreq: "monthly",
+      priority: path === "/" ? "1.0" : SITELINKS_TARGETS.has(path) ? "0.9" : "0.7",
+    })),
     ...CITIES.map((c) => ({
       loc: `${SITE}/locations/${c.slug}/`,
       changefreq: "monthly",

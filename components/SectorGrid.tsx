@@ -58,22 +58,22 @@ const SECTORS: Entry[] = [
 
 export default function SectorGrid() {
   return (
-    <div className="mt-14 grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-3 border border-line">
+    <div className="mt-8 grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-3 border border-line">
       {SECTORS.map(({ Icon, name, note, micro }) => (
         <div
           key={name}
-          className="relative bg-bone p-8 lg:p-10 group overflow-hidden transition-colors duration-500 hover:bg-cream/60"
+          className="relative bg-bone p-6 lg:p-7 group overflow-hidden transition-colors duration-500 hover:bg-cream/60"
         >
           <div className="flex items-center justify-between">
             <Icon
-              className="w-8 h-8 text-bronze-700 transition-colors duration-300 group-hover:text-burgundy"
+              className="w-7 h-7 text-bronze-700 transition-colors duration-300 group-hover:text-burgundy"
               strokeWidth={1.25}
             />
             <span className="text-[10px] uppercase tracking-[0.22em] text-ink-mute font-medium">
               Sector
             </span>
           </div>
-          <h3 className="mt-8 font-serif text-2xl text-navy relative inline-block">
+          <h3 className="mt-5 font-serif text-2xl text-navy relative inline-block">
             {name}
             {/* Bronze underline animation */}
             <span

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
+import { trackLead } from "@/components/Analytics";
 
 type Status = "idle" | "submitting" | "submitted" | "error";
 
@@ -10,17 +11,45 @@ const FIELD_BASE =
 
 const LABEL_BASE = "block text-[11px] uppercase tracking-[0.18em] text-ink-soft font-medium";
 
+const INQUIRY_LABELS: Record<string, string> = {
+  operator: "Operator or founder seeking a permanent home",
+  allocator: "Allocator or family office",
+  counterparty: "Counterparty or co-investor",
+  board: "Board, governance, or leadership inquiry",
+  media: "Media inquiry",
+  other: "Other",
+};
+
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setError(null);
     setStatus("submitting");
     const formData = new FormData(event.currentTarget);
-    const payload = Object.fromEntries(formData.entries());
-    // eslint-disable-next-line no-console
-    console.log("[Rothenbury introduction request]", payload);
-    setStatus("submitted");
+    const payload = Object.fromEntries(formData.entries()) as Record<string, string>;
+    // Endpoint resolver keys on the human-readable inquiryType label, so map slug -> label.
+    if (payload.inquiryType && INQUIRY_LABELS[payload.inquiryType]) {
+      payload.inquiryType = INQUIRY_LABELS[payload.inquiryType];
+    }
+    try {
+      const res = await fetch("https://rothenbury-contact-api.vercel.app/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ brand: "rothenbury", ...payload }),
+      });
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}));
+        throw new Error(j.error || "Something went wrong. Please try again.");
+      }
+      trackLead("contact_form");
+      setStatus("submitted");
+    } catch (err) {
+      setStatus("error");
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    }
   }
 
   if (status === "submitted") {
@@ -39,10 +68,9 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      action="/api/contact"
-      method="POST"
       className="border border-line bg-bone p-7 lg:p-9 space-y-6"
       aria-label="Request a private introduction"
+      noValidate
     >
       <div>
         <div className="text-[10px] uppercase tracking-[0.24em] text-bronze-700 font-mono">
@@ -156,9 +184,14 @@ export default function ContactForm() {
         disabled={status === "submitting"}
         className="btn-primary w-full sm:w-auto group"
       >
-        {status === "submitting" ? "Sending…" : "Submit introduction request"}
+        {status === "submitting" ? "Sending..." : "Submit introduction request"}
         <Send className="w-4 h-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2} />
       </button>
+      {error && (
+        <p role="alert" className="text-sm font-medium text-red-600">
+          {error}
+        </p>
+      )}
     </form>
   );
 }

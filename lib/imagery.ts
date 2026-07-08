@@ -40,7 +40,7 @@ function build(id: string, w = 1920, h?: number, opts: { bw?: boolean } = {}) {
 
 export const IMAGES = {
   // Locally generated brand photos (Rothenbury-original)
-  brandHero: "/hero.png",
+  brandHero: "/hero.webp",
   // Retained as a generic skyline asset; no longer surfaced as a Panama signal.
   brandPanamaSkyline: "/panama-skyline.png",
 

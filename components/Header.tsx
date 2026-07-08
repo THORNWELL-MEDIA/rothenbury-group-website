@@ -14,7 +14,7 @@ const NAV = [
   { href: "/leadership/", label: "Leadership" },
   { href: "/insights/", label: "Insights" },
   { href: "/reviews/", label: "Reviews" },
-  { href: "/contact/", label: "Contact" },
+  { href: "/careers/", label: "Careers" },
 ];
 
 export default function Header() {

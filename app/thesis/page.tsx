@@ -287,7 +287,7 @@ export default function ThesisPage() {
               </p>
             </div>
             <div className="lg:sticky lg:top-32">
-              <OperatingSupportStack />
+              <OperatingSupportStack stacked />
             </div>
           </div>
         </div>

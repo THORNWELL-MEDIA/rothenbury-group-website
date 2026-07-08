@@ -12,6 +12,27 @@ const SOCIAL_URLS = Object.values(SOCIAL);
 
 const isConfirmed = (value: string) => value !== TBD && value.length > 0;
 
+// Direct subsidiaries of Rothenbury Group (parent holding co).
+// Northstone holds the operating brands; Thornwell Media is the independent
+// agency subsidiary.
+const SUB_ORGS = [
+  {
+    "@type": "Organization",
+    "@id": "https://northstoneholdings.com/#organization",
+    name: "Northstone Holdings",
+    url: "https://northstoneholdings.com",
+  },
+  {
+    "@type": "Organization",
+    "@id": "https://thornwellmedia.com/#organization",
+    name: "Thornwell Media",
+    url: "https://thornwellmedia.com",
+  },
+];
+
+// Toll-free corporate line confirmed in the master NAP sheet 2026-05-15.
+const ROTH_TEL = "+1-877-867-4555";
+
 export function organizationSchema() {
   const address =
     isConfirmed(NAP.street) && isConfirmed(NAP.city)
@@ -33,11 +54,22 @@ export function organizationSchema() {
     alternateName: BRAND.shortName,
     description: BRAND.shortDescription,
     url: "https://www.rothenbury.com/",
+    logo: "https://www.rothenbury.com/og-default.png",
+    telephone: ROTH_TEL,
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: ROTH_TEL,
+        contactType: "corporate office",
+        availableLanguage: ["en"],
+        areaServed: ["US", "CA"],
+      },
+    ],
+    subOrganization: SUB_ORGS,
     sameAs: SOCIAL_URLS,
   };
 
   if (address) schema.address = address;
-  if (isConfirmed(NAP.phoneE164)) schema.telephone = NAP.phoneE164;
   if (isConfirmed(NAP.email)) schema.email = NAP.email;
 
   return schema;
@@ -50,8 +82,36 @@ export function websiteSchema() {
     "@id": "https://www.rothenbury.com/#website",
     url: "https://www.rothenbury.com/",
     name: BRAND.publicName,
+    alternateName: BRAND.shortName,
     publisher: { "@id": "https://www.rothenbury.com/#organization" },
     inLanguage: "en-CA",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://www.rothenbury.com/search?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+}
+
+// Sitelinks engineering: primary nav SiteNavigationElement ItemList.
+// Helps Google identify the canonical 5-6 pages we want as sitelinks.
+export function siteNavigationSchema() {
+  const base = "https://www.rothenbury.com";
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${base}/#sitenav`,
+    name: `${BRAND.publicName} primary navigation`,
+    itemListElement: [
+      { "@type": "SiteNavigationElement", position: 1, name: "Portfolio", url: `${base}/portfolio` },
+      { "@type": "SiteNavigationElement", position: 2, name: "About", url: `${base}/about` },
+      { "@type": "SiteNavigationElement", position: 3, name: "Leadership", url: `${base}/leadership` },
+      { "@type": "SiteNavigationElement", position: 4, name: "Insights", url: `${base}/insights` },
+      { "@type": "SiteNavigationElement", position: 5, name: "Contact", url: `${base}/contact` },
+    ],
   };
 }
 

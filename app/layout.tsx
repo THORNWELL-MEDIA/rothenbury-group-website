@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
 import { Inter_Tight, Cormorant_Garamond, Source_Serif_4, JetBrains_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SchemaJsonLd from "@/components/SchemaJsonLd";
 import StickyMobileCTA from "@/components/StickyMobileCTA";
-import { organizationSchema, websiteSchema } from "@/lib/schema";
+import Analytics from "@/components/Analytics";
+import { organizationSchema, websiteSchema, siteNavigationSchema } from "@/lib/schema";
 import { BRAND } from "@/lib/constants";
 
 const sans = Inter_Tight({
@@ -68,21 +68,27 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://www.rothenbury.com" },
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const h = await headers();
-  const isPreview = (h.get("host") || "").endsWith(".vercel.app");
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const isPreview = process.env.VERCEL_ENV === "preview";
   return (
     <html lang="en-CA" className={`${sans.variable} ${serif.variable} ${body.variable} ${mono.variable}`}>
       <head>
         {isPreview && <meta name="robots" content="noindex, nofollow" />}
-        <SchemaJsonLd data={[organizationSchema(), websiteSchema()]} />
+        <SchemaJsonLd data={[organizationSchema(), websiteSchema(), siteNavigationSchema()]} />
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-W8W5XFZ5');`,
           }}
         />
-        {/* End Google Tag Manager — GA4 measurement ID injected via GTM container (placeholder property) */}
+        {/* End Google Tag Manager */}
+        {/* GA4 gtag.js fallback for direct event firing (Analytics.tsx) */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0PM57X4W7" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S0PM57X4W7');`,
+          }}
+        />
       </head>
       <body>
         {/* Google Tag Manager (noscript) */}
@@ -105,6 +111,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <main id="main">{children}</main>
         <Footer />
         <StickyMobileCTA />
+        <Analytics />
       </body>
     </html>
   );

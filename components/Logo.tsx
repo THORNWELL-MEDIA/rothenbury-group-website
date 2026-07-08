@@ -42,7 +42,7 @@ export default function Logo({ className, variant = "navy", monogramOnly = false
               variant === "navy" ? "text-ink-soft" : "text-ivory/80",
             )}
           >
-            Holding Company · Est. {new Date().getFullYear()}
+            Holding Company
           </span>
         </span>
       )}

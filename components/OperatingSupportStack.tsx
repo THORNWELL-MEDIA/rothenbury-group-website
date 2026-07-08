@@ -47,16 +47,16 @@ const PILLARS: Pillar[] = [
   },
 ];
 
-export default function OperatingSupportStack() {
+export default function OperatingSupportStack({ stacked = false }: { stacked?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <div
       ref={ref}
-      className="border border-line bg-cream/40 p-8 lg:p-12"
+      className={stacked ? "border border-line bg-cream/40 p-6 lg:p-7" : "border border-line bg-cream/40 p-8 lg:p-12"}
     >
-      <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] items-stretch">
+      <div className={stacked ? "space-y-7" : "grid gap-10 lg:grid-cols-[1.05fr_1fr] items-stretch"}>
         {/* Diagram */}
         <div className="relative">
           <svg

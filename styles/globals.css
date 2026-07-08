@@ -142,10 +142,10 @@
 
   /* Section spacing */
   .section {
-    @apply py-20 sm:py-24 lg:py-32;
+    @apply py-14 sm:py-16 lg:py-20;
   }
   .section-tight {
-    @apply py-16 sm:py-20;
+    @apply py-12 sm:py-14;
   }
 
   /* Hairline rules */
@@ -268,5 +268,34 @@
   .quote-rule {
     border-left: 2px solid #5A1A2B;
     padding-left: 1.5rem;
+  }
+
+  /*
+   * DARK-ON-DARK CONTRAST FIX (added 2026-05-29)
+   * The global h1..h4 rule forces text-burgundy. Inside dark or
+   * burgundy hero bands, that renders heading-on-self (ratio 1.0).
+   * Force bone for headings inside .bg-navy and .bg-burgundy
+   * sections so hero H1 stays legible.
+   */
+  .bg-navy h1,
+  .bg-navy h2,
+  .bg-navy h3,
+  .bg-navy h4,
+  .bg-burgundy h1,
+  .bg-burgundy h2,
+  .bg-burgundy h3,
+  .bg-burgundy h4 {
+    color: #FBF7F0;
+  }
+
+  /*
+   * Location card city labels sit over image+gradient. Sampling
+   * shows the bone H3 is too low contrast against the burgundy
+   * image tint. Add a text shadow plus weight bump so the city
+   * name stays crisp on either gradient stop.
+   */
+  a.group h3.text-bone,
+  a.group .text-bone {
+    text-shadow: 0 1px 2px rgba(20, 12, 16, 0.55), 0 2px 12px rgba(20, 12, 16, 0.35);
   }
 }

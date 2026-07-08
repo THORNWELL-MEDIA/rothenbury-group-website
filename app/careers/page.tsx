@@ -3,9 +3,13 @@ import Image from "next/image";
 import { ArrowUpRight, Users, Layers, MapPin } from "lucide-react";
 import SchemaJsonLd from "@/components/SchemaJsonLd";
 import CTASection from "@/components/CTASection";
-import JobBoard from "./JobBoard";
 import { breadcrumbSchema } from "@/lib/schema";
 import { IMAGES } from "@/lib/imagery";
+
+import { fetchRolesFromApi } from '@/lib/data/careers'
+import JobFilterList from './job-filter-list'
+import JobFilterControls from './job-filter-controls'
+import { CareersFilterProvider } from './careers-filter-context'
 
 export const metadata = {
   title: "Careers",
@@ -35,9 +39,12 @@ const PILLARS = [
   },
 ];
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const allRoles = await fetchRolesFromApi()
+  const totalRoles = allRoles.length
+
   return (
-    <>
+    <CareersFilterProvider allRoles={allRoles}>
       <SchemaJsonLd
         data={breadcrumbSchema([
           { name: "Home", url: "https://www.rothenbury.com/" },
@@ -72,7 +79,7 @@ export default function CareersPage() {
             </p>
           </div>
           <div className="mt-10 flex flex-col sm:flex-row gap-3">
-            <Link href="/positions/" className="btn-gold group">
+            <Link href="/careers/#positions" className="btn-gold group">
               View open positions
               <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2} />
             </Link>
@@ -83,6 +90,12 @@ export default function CareersPage() {
               Explore the portfolio
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-ivory border-b border-line py-8">
+        <div className="container-wide">
+          <JobFilterControls scrollToId="positions" />
         </div>
       </section>
 
@@ -108,17 +121,36 @@ export default function CareersPage() {
         </div>
       </section>
 
-      <JobBoard />
+      <section id="positions" className="bg-ivory py-16 md:py-24">
+        <div className="container-wide">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.2em] text-gold-600">
+            Open positions
+          </p>
+          <h2 className="text-3xl font-serif leading-tight text-navy md:text-4xl">
+            {totalRoles} {totalRoles === 1 ? 'role' : 'roles'} open right now.
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm text-ink/70 mb-10">
+            Filtered by province or state, then city. Click a role to read the
+            full job description and apply.
+          </p>
+
+          <div className="mb-10">
+            <JobFilterControls scrollToId="positions" />
+          </div>
+
+          <JobFilterList />
+        </div>
+      </section>
 
       <CTASection
         eyebrow="Don't see your role?"
         heading="We accept open applications for senior operators."
         body="Senior operator and leadership opportunities open across the portfolio throughout the year. Send us your background. If it's a fit, we'll route it to the right operating brand."
-        primaryHref="/positions/"
-        primaryLabel="See open positions"
+        primaryHref="/careers/#positions"
+        primaryLabel="Explore Opportunities"
         secondaryHref="/contact/"
         secondaryLabel="Send open application"
       />
-    </>
+    </CareersFilterProvider>
   );
 }
