@@ -111,6 +111,7 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
       rawHtml = rawHtml.replace(/<(div|p)[^>]*>(?:\s|<br\s*\/?>)*([A-Za-z0-9 &\/,-]+):(?:\s|<br\s*\/?>)*<\/\1>/gi, '\n<h3>$2</h3>\n')
       rawHtml = rawHtml.replace(/(<br\s*\/?>|\n|^)\s*([A-Za-z0-9 &\/,-]+):\s*(?=<br\s*\/?>|\n|$)/gi, '$1\n<h3>$2</h3>\n')
 
+
       // 3. Format plain text lists (- item or • item) into HTML <ul><li>
       rawHtml = rawHtml.replace(/(?:<div[^>]*>|<p[^>]*>|<br\s*\/?>|\n|^)\s*[-•]\s+(.*?)\s*(?:<\/div>|<\/p>|<br\s*\/?>|\n|$)/gi, '\n<li>$1</li>\n')
       rawHtml = rawHtml.replace(/(?:\n*<li>.*?<\/li>\n*)+/g, (match) => `\n<ul>${match}</ul>\n`)
