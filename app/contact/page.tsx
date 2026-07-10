@@ -72,7 +72,7 @@ export default function ContactPage() {
           </nav>
           <div className="mt-6 grid gap-12 lg:grid-cols-[1.5fr_1fr] items-end">
             <h1 className="font-serif text-bone text-[38px] sm:text-[56px] lg:text-[88px] leading-[1.06] sm:leading-[1.02] tracking-tightest text-balance">
-              <span className="italic text-bronze-200">A private introduction</span> through the Office of the Group.
+              <span className="italic text-bronze-200">A private introduction</span> through the Rothenbury Group.
             </h1>
             <p className="text-ivory/90 text-lg leading-relaxed max-w-md font-serif italic">
               Inquiries from operators, allocators, counterparties, and the
@@ -105,7 +105,7 @@ export default function ContactPage() {
               Confidential, by design.
             </h2>
             <p className="mt-5 body-md max-w-xl">
-              Submissions are received privately by the Office of the Group and
+              Submissions are received privately by Rothenbury Group and
               routed to the appropriate member of leadership. Specific portfolio
               detail and named-leadership engagements are arranged by direct
               correspondence after a first introduction.
@@ -118,7 +118,7 @@ export default function ContactPage() {
           <aside className="space-y-8 lg:sticky lg:top-32">
             <div className="border border-line bg-cream/30 p-7 lg:p-8">
               <h3 className="text-[10px] uppercase tracking-[0.22em] text-bronze-700 font-medium">
-                Office of the Group
+                Rothenbury Group
               </h3>
               <ul className="mt-6 space-y-5 text-sm">
                 <li className="flex items-start gap-3">
@@ -134,7 +134,7 @@ export default function ContactPage() {
                       </address>
                     ) : (
                       <span className="text-navy leading-relaxed">
-                        Office of the Group
+                        Rothenbury Group
                         <br />
                         Toronto · New York
                       </span>
@@ -199,7 +199,7 @@ export default function ContactPage() {
                   Toronto · New York · Across North America
                 </div>
                 <div className="text-[10px] uppercase tracking-[0.22em] text-bronze-200">
-                  Office of the Group
+                  Rothenbury Group
                 </div>
               </div>
             </div>

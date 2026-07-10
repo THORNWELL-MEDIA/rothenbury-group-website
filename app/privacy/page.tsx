@@ -74,7 +74,7 @@ export default function PrivacyPage() {
         <h2 id="contact" className="font-serif text-2xl text-navy">Contact</h2>
         <p>
           For privacy questions or to exercise your rights, contact us through our Contact
-          page. Written privacy requests are routed through the Office of the Group.
+          page. Written privacy requests are routed through the Rothenbury Group.
         </p>
       </LegalLayout>
     </>

@@ -289,7 +289,7 @@ export default function AboutPage() {
       <section className="bg-bone py-20 lg:py-28">
         <div className="container-wide">
           <Flourish />
-          <PullQuote attribution="Office of the Group · Rothenbury">
+          <PullQuote attribution="Rothenbury Group">
             We did not build a holding company to repackage what private equity already does.
             We built one because the standard model fails operators, fails founders, and fails
             the businesses themselves.
@@ -393,7 +393,7 @@ export default function AboutPage() {
             <p className="mt-6 body-lg max-w-2xl">
               Rothenbury is led by a leadership team responsible for parent-level
               governance. Named introductions for board and counterparty engagements are
-              arranged through the Office of the Group.
+              arranged through the Rothenbury Group.
             </p>
           </div>
           <Link href="/leadership/" className="btn-secondary group whitespace-nowrap">

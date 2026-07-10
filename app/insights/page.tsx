@@ -118,7 +118,7 @@ export default function InsightsPage() {
           <div className="max-w-2xl">
             <div className="eyebrow">Latest letters & notes</div>
             <h2 className="mt-5 display-3 text-balance">
-              Recent perspectives from the Office of the Group.
+              Recent perspectives from the Rothenbury Group.
             </h2>
           </div>
 

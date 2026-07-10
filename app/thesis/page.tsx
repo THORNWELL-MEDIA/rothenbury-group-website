@@ -82,7 +82,7 @@ export default function ThesisPage() {
           <div className="grid gap-16 lg:grid-cols-[2.4fr_1fr]">
             <article className="max-w-3xl">
               <div className="text-[10px] uppercase tracking-[0.24em] text-bronze-700 font-mono">
-                Letter from the Office of the Group
+                Letter from the Rothenbury Group
               </div>
               <h2 className="mt-5 display-3 text-balance">
                 Why this exists, in three plain sentences.
@@ -491,7 +491,7 @@ export default function ThesisPage() {
                   themselves.&rdquo;
                 </p>
                 <p className="mt-3 text-[11px] uppercase tracking-[0.2em] text-ink-soft">
-                  Office of the Group · Rothenbury
+                  Rothenbury Group
                 </p>
               </div>
             </aside>
@@ -501,7 +501,7 @@ export default function ThesisPage() {
 
       <CTASection
         eyebrow="Speak with the principals"
-        heading="Private introductions are arranged through the Office of the Group."
+        heading="Private introductions are arranged through the Rothenbury Group."
         body="We respond to qualified inquiries from operators, founders, allocators, and counterparties within two business days."
       />
     </>

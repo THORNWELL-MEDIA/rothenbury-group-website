@@ -23,7 +23,7 @@ export const BRAND = {
 
 /**
  * Public NAP. The Group does not publish a phone line. Email is routed through
- * the Office of the Group. Address is held at the city level only.
+ * the Rothenbury Group. Address is held at the city level only.
  *
  * Typed as plain strings (not const-literal) so equality checks against TBD
  * narrow correctly across components.
@@ -41,10 +41,10 @@ export const NAP: {
   website: string;
 } = {
   name: "Rothenbury Group",
-  street: "Office of the Group",
+  street: "120 Adelaide Street West, Suite 2508",
   city: "Toronto",
   region: "Ontario",
-  postalCode: "",
+  postalCode: "M5H 1T1",
   country: "Canada",
   // Phone is intentionally not published. Institutional inquiries route through
   // the contact form. Keep TBD so the visibility check in the header / footer
@@ -81,7 +81,7 @@ export const SOCIAL = {
 
 export const CTA = {
   primary: "Request a private introduction",
-  secondary: "Speak with the Office of the Group",
+  secondary: "Speak with the Rothenbury Group",
   tertiary: "Read the thesis",
 } as const;
 

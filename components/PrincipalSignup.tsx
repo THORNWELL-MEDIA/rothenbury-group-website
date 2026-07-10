@@ -21,7 +21,7 @@ export default function PrincipalSignup() {
           Received
         </div>
         <p className="mt-2 text-sm text-ivory/85 leading-relaxed">
-          Your request has been logged with the Office of the Group.
+          Your request has been logged with the Rothenbury Group.
         </p>
       </div>
     );
