@@ -243,15 +243,6 @@ export default async function CareerRolePage({ params }: RouteParams) {
                       padding-bottom: 0.25rem;
                       width: fit-content;
                     }
-<<<<<<< HEAD
-=======
-                    .job-desc h1, .job-desc h2, .job-desc h4 {
-                      color: #5A1A2B;
-                      font-weight: 800;
-                      margin-top: 2.5rem;
-                      margin-bottom: 0.75rem;
-                    }
->>>>>>> a70d44eb80c9db639a41d046a5ae6e23ce2194ac
                     .job-desc ul {
                       list-style-type: none !important;
                       padding-left: 0 !important;
