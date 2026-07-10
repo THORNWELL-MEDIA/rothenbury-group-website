@@ -102,7 +102,6 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
       // Clean up messy Zoho HTML artifacts (non-breaking spaces)
       rawHtml = rawHtml.replace(/&nbsp;/gi, ' ')
 
-
       // 1. Convert standalone bold text to <h3> (handles <div><b>Text</b></div> or <br><b>Text</b><br>)
       rawHtml = rawHtml.replace(/<(div|p)[^>]*>(?:\s|<br\s*\/?>)*(?:<b>|<strong>)(.*?)(?:<\/b>|<\/strong>)(?:\s|<br\s*\/?>)*<\/\1>/gi, '\n<h3>$2</h3>\n')
       rawHtml = rawHtml.replace(/(<br\s*\/?>|\n|^)\s*(?:<b>|<strong>)(.*?)(?:<\/b>|<\/strong>)\s*(?=<br\s*\/?>|\n|$)/gi, '$1\n<h3>$2</h3>\n')
@@ -110,7 +109,6 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
       // 2. Convert plain text ending in colon (like "Requirements:") to <h3>
       rawHtml = rawHtml.replace(/<(div|p)[^>]*>(?:\s|<br\s*\/?>)*([A-Za-z0-9 &\/,-]+):(?:\s|<br\s*\/?>)*<\/\1>/gi, '\n<h3>$2</h3>\n')
       rawHtml = rawHtml.replace(/(<br\s*\/?>|\n|^)\s*([A-Za-z0-9 &\/,-]+):\s*(?=<br\s*\/?>|\n|$)/gi, '$1\n<h3>$2</h3>\n')
-
 
       // 3. Format plain text lists (- item or • item) into HTML <ul><li>
       rawHtml = rawHtml.replace(/(?:<div[^>]*>|<p[^>]*>|<br\s*\/?>|\n|^)\s*[-•]\s+(.*?)\s*(?:<\/div>|<\/p>|<br\s*\/?>|\n|$)/gi, '\n<li>$1</li>\n')
