@@ -43,7 +43,7 @@ const REGIONS = [
   {
     label: "Canada",
     accent: "burgundy" as const,
-    anchor: "Office of the Group, Toronto",
+    anchor: "Rothenbury Group, Toronto",
     cities: ["Toronto", "Vancouver", "Montreal", "Calgary"],
     note: "Operating partners across real estate, contracting, and services.",
   },
@@ -150,7 +150,7 @@ export default function HomePage() {
                 </div>
                 <span className="inline-flex items-center gap-2 px-3 py-1 border border-bronze-200/35 bg-walnut/30 text-[10px] uppercase tracking-[0.22em] text-bronze-200 font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-bronze-200" />
-                  Office of the Group · Toronto · New York
+                  Rothenbury Group · Toronto · New York
                 </span>
               </div>
               <h1 className="mt-4 font-serif text-ivory text-[34px] sm:text-[54px] lg:text-[68px] leading-[1.03] sm:leading-[0.98] tracking-tightest text-balance">
@@ -472,7 +472,7 @@ export default function HomePage() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-walnut/60 via-transparent to-transparent" />
               <div className="absolute bottom-5 left-5 right-5 text-[11px] uppercase tracking-[0.22em] text-bronze-200/90 font-mono">
-                The boardroom · Office of the Group
+                The boardroom · Rothenbury Group
               </div>
             </div>
           </div>

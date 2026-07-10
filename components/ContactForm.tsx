@@ -58,7 +58,7 @@ export default function ContactForm() {
         <CheckCircle2 className="mx-auto w-10 h-10 text-bronze-700" strokeWidth={1.25} />
         <h3 className="mt-6 font-serif text-3xl text-navy">Received.</h3>
         <p className="mt-4 text-ink-soft leading-relaxed max-w-md mx-auto">
-          Your request has been logged with the Office of the Group. A member of
+          Your request has been logged with the Rothenbury Group. A member of
           the leadership team will respond within two business days.
         </p>
       </div>
@@ -79,7 +79,7 @@ export default function ContactForm() {
         <p className="mt-2 text-[13px] text-ink-soft leading-relaxed">
           Specific portfolio detail, leadership identification, and capital
           commitments are discussed privately. Inquiries below are reviewed by
-          the Office of the Group.
+          the Rothenbury Group.
         </p>
       </div>
 

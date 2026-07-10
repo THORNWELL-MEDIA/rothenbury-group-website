@@ -70,7 +70,7 @@ export default function Footer() {
               Request a private introduction
             </Link>
             <p className="text-[11px] uppercase tracking-[0.22em] text-bronze-200">
-              Office of the Group
+              Rothenbury Group
             </p>
           </div>
         </div>
@@ -135,9 +135,16 @@ export default function Footer() {
                 {NAP.email}
               </a>
             ) : null}
+            <address className="not-italic text-ivory/95 leading-relaxed">
+              {NAP.street}
+              <br />
+              {NAP.city}, {NAP.region} {NAP.postalCode}
+              <br />
+              {NAP.country}
+            </address>
             <p>
-              Operating partners across the United States and Canada. The Office of
-              the Group coordinates correspondence between Toronto and New York.
+              Operating partners across the United States and Canada. Rothenbury Group
+              coordinates correspondence between Toronto and New York.
             </p>
           </div>
 
@@ -190,7 +197,7 @@ export default function Footer() {
               Principal-only updates
             </div>
             <p className="mt-5 font-serif text-2xl lg:text-3xl text-ivory leading-snug max-w-2xl text-balance">
-              Quarterly notes from the Office of the Group.
+              Quarterly notes from the Rothenbury Group.
               <span className="text-bronze-200">
                 {" "}
                 Distributed privately, by name only.
@@ -227,7 +234,7 @@ export default function Footer() {
               jurisdictions.
             </p>
             <p className="text-ivory/55 text-[11px]">
-              Office of the Group · Toronto, Ontario · New York, NY.
+              Rothenbury Group · Toronto, Ontario · New York, NY.
             </p>
           </div>
           <p className="lg:text-right">© {year} {BRAND.publicName}. All rights reserved.</p>

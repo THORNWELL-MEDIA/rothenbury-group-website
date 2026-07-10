@@ -105,7 +105,7 @@ function renderBody(body: string) {
     // Inject pull quote and a flourish after the chosen paragraph
     if (idx === pullQuoteIdx && pullQuoteText) {
       out.push(
-        <PullQuote key={`pq-${idx}`} attribution={`From the Office of the Group`}>
+        <PullQuote key={`pq-${idx}`} attribution={`From Rothenbury Group`}>
           {pullQuoteText}
         </PullQuote>
       );
@@ -206,7 +206,7 @@ export default function InsightDetailPage({ params }: { params: { slug: string }
             </p>
             <div className="mt-8 flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] text-ivory/70">
               <span className="h-px w-10 bg-bronze-200/70" />
-              By the Office of the Group · Rothenbury
+              By Rothenbury Group
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@ export default function InsightDetailPage({ params }: { params: { slug: string }
               <div className="prose prose-lg">{renderBody(article.body)}</div>
               <Flourish className="my-14" />
               <div className="text-xs uppercase tracking-[0.22em] text-ink-mute italic">
-                Published by the Office of the Group · {formatDate(article.date)}
+                Published by Rothenbury Group · {formatDate(article.date)}
               </div>
             </article>
             <aside className="lg:sticky lg:top-28 self-start">

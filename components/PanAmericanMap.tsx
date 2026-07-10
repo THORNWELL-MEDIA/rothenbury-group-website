@@ -50,7 +50,7 @@ const VIEW_H = 600;
 
 // Default operating geometry — Toronto · NY operating spine plus secondary hubs.
 const DEFAULT_MARKERS: Marker[] = [
-  { lon: -79.3832, lat: 43.6532, label: "Toronto", country: "ca", hub: true, caption: "Office of the Group" },
+  { lon: -79.3832, lat: 43.6532, label: "Toronto", country: "ca", hub: true, caption: "Rothenbury Group" },
   { lon: -74.006, lat: 40.7128, label: "New York", country: "us", hub: true, caption: "U.S. anchor" },
   // Canada secondaries
   { lon: -75.6972, lat: 45.4215, label: "Ottawa", country: "ca" },

@@ -24,7 +24,7 @@ const MEMBERS: Member[] = [
   {
     name: "Office of the Founder",
     title: "Founder, President & COO",
-    bio: "Day-to-day governance of the Group is led by the founder and a small leadership team. The founder operates between the Toronto and New York offices and is reachable via the Office of the Group for board, investor, and counterparty correspondence.",
+    bio: "Day-to-day governance of the Group is led by the founder and a small leadership team. The founder operates between the Toronto and New York offices and is reachable via the Rothenbury Group for board, investor, and counterparty correspondence.",
     status: "private",
   },
   {
@@ -94,7 +94,7 @@ export default function LeadershipPage() {
                       <div className="text-center px-6">
                         <Lock className="mx-auto w-7 h-7 text-bronze-700" strokeWidth={1.25} />
                         <div className="mt-4 font-serif italic text-2xl text-navy">
-                          Office of the Group
+                          Rothenbury Group
                         </div>
                         <div className="mt-3 text-[10px] uppercase tracking-[0.22em] text-bronze-700">
                           Toronto · New York
@@ -131,7 +131,7 @@ export default function LeadershipPage() {
           <p className="mt-10 max-w-2xl text-sm text-ink-soft italic leading-relaxed">
             Rothenbury Group keeps leadership identification private as a matter of
             operating policy. Board introductions and named-leadership engagements are
-            arranged directly through the Office of the Group.
+            arranged directly through the Rothenbury Group.
           </p>
         </div>
       </section>

@@ -82,7 +82,7 @@ export default function OperatingSupportStack({ stacked = false }: { stacked?: b
               fill="#5A1A2B"
               letterSpacing="0.5"
             >
-              The Parent · Office of the Group
+              The Parent · Rothenbury Group
             </text>
 
             {/* Ground label */}
