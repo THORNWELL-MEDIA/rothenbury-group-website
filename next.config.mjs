@@ -5,6 +5,7 @@ const nextConfig = {
     unoptimized: true,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "phpstack-1217932-6516253.cloudwaysapps.com" },
     ],
   },
   reactStrictMode: true,

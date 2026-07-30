@@ -9,8 +9,9 @@ import 'react-phone-number-input/style.css'
 interface Props {
   role: string
   jobId: string
-  jobOpeningId: string
-  workType: 'remote' | 'hybrid'
+  jobOpeningId?: string
+  locId?: string | number
+  workType?: string
   className?: string
   variant?: 'primary' | 'ghost'
   label?: string
@@ -20,6 +21,7 @@ export function ApplyButton({
   role,
   jobId,
   jobOpeningId,
+  locId,
   workType,
   className = '',
   variant = 'primary',
@@ -46,7 +48,7 @@ export function ApplyButton({
         <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </button>
 
-      {open && <ApplyModal role={role} jobId={jobId} jobOpeningId={jobOpeningId} workType={workType} onClose={() => setOpen(false)} />}
+      {open && <ApplyModal role={role} jobId={jobId} jobOpeningId={jobOpeningId} locId={locId} workType={workType} onClose={() => setOpen(false)} />}
     </>
   )
 }
@@ -55,15 +57,18 @@ function ApplyModal({
   role,
   jobId,
   jobOpeningId,
+  locId,
   workType,
   onClose,
 }: {
   role: string
   jobId: string
-  jobOpeningId: string
-  workType: 'remote' | 'hybrid'
+  jobOpeningId?: string
+  locId?: string | number
+  workType?: string
   onClose: () => void
 }) {
+  const isRemoteForm = !workType || /remote|hybrid/i.test(String(workType))
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [errorMsg, setErrorMsg] = useState('')
@@ -143,7 +148,7 @@ function ApplyModal({
       errors.resume = 'Please upload a resume'
     }
 
-    if (workType === 'remote') {
+    if (isRemoteForm) {
       const workedFromHome = fd.get('worked_from_home') as string
       if (!workedFromHome) errors.worked_from_home = 'This field is required'
 
@@ -193,12 +198,24 @@ function ApplyModal({
 
     // Append hidden fields
     fd.append('job_id', jobId)
+    if (jobOpeningId) fd.append('job_opening_id', jobOpeningId)
+    if (locId) {
+      fd.append('location_id', String(locId))
+      fd.append('loc_id', String(locId))
+      fd.append('job_location_id', String(locId))
+      fd.append('location', String(locId))
+      fd.append('location_Id', String(locId))
+    }
+    if (workType) {
+      fd.append('job_type', workType)
+      fd.append('work_type', workType)
+    }
     fd.append('source', 'rothenbury')
 
     // Process mobile
     fd.set('mobile', phone)
 
-    const baseUrl = process.env.NEXT_PUBLIC_PORTAL_BASE_URL || 'https://portal.revun.com'
+    const baseUrl = process.env.NEXT_PUBLIC_PORTAL_BASE_URL || 'https://phpstack-1217932-6516253.cloudwaysapps.com'
 
     try {
       const res = await fetch(`${baseUrl}/api/v1/job-postings/apply`, {
@@ -236,7 +253,7 @@ function ApplyModal({
           <div className="flex shrink-0 items-center justify-between border-b border-ink/10 bg-white px-5 py-4 pt-6">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-gold-600">
-                Apply Now · {jobOpeningId}
+                Apply Now
               </p>
               <h2
                 id="apply-modal-title"
@@ -402,7 +419,7 @@ function ApplyModal({
                         </div>
                       </div>
 
-                      {workType === 'remote' && (
+                      {isRemoteForm && (
                         <>
                           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div>
@@ -475,7 +492,7 @@ function ApplyModal({
                         </>
                       )}
 
-                      {workType !== 'remote' && (
+                      {!isRemoteForm && (
                         <>
                           <div>
                             <label className="mb-1 block text-xs font-semibold text-ink/70">

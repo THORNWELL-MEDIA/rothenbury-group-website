@@ -166,7 +166,7 @@ export default async function CareerRolePage({ params }: RouteParams) {
                 </div>
 
                 <div className="flex flex-wrap gap-3 lg:pb-1">
-                  <ApplyButton role={role.title} jobId={role.jobId} jobOpeningId={role.jobOpeningId} workType={role.workType} />
+                  <ApplyButton role={role.title} jobId={role.jobId} jobOpeningId={role.jobOpeningId} locId={role.locId} workType={role.workType} />
                 </div>
               </div>
             </div>
@@ -222,26 +222,36 @@ export default async function CareerRolePage({ params }: RouteParams) {
                     .job-desc h1,
                     .job-desc h2,
                     .job-desc h3,
-                    .job-desc h4,
-                    .job-desc h5,
-                    .job-desc h6,
-                    .job-desc p > strong:only-child,
-                    .job-desc p > b:only-child,
-                    .job-desc div > strong:only-child,
-                    .job-desc div > b:only-child,
-                    .job-desc p > span > strong:only-child,
-                    .job-desc p > span > b:only-child {
+                    .job-desc h4 {
                       display: block;
                       font-size: 1.125rem;
                       font-weight: 800;
                       color: #5A1A2B;
-                      margin-top: 2.5rem;
+                      margin-top: 2.25rem;
                       margin-bottom: 0.75rem;
                       text-transform: uppercase;
                       letter-spacing: 0.05em;
                       border-bottom: 2px solid #705432;
                       padding-bottom: 0.25rem;
                       width: fit-content;
+                    }
+                    .job-desc p strong,
+                    .job-desc p b,
+                    .job-desc div strong,
+                    .job-desc div b,
+                    .job-desc li strong,
+                    .job-desc li b,
+                    .job-desc span strong,
+                    .job-desc span b {
+                      display: inline !important;
+                      font-size: inherit !important;
+                      font-weight: 700 !important;
+                      color: inherit !important;
+                      margin: 0 !important;
+                      padding: 0 !important;
+                      border: none !important;
+                      text-transform: none !important;
+                      width: auto !important;
                     }
                     .job-desc ul {
                       list-style-type: none !important;
