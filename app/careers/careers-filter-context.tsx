@@ -93,11 +93,19 @@ export function CareersFilterProvider({ allRoles, children }: { allRoles: Role[]
       .sort((a, b) => a.country.localeCompare(b.country))
   }, [allRoles])
 
+  const getCategories = (r: Role): string[] => {
+    if (Array.isArray(r?.category)) return r.category.filter(Boolean)
+    if (typeof r?.category === 'string' && r.category) return [r.category]
+    return ['Other']
+  }
+
   const categoriesWithCounts = useMemo(() => {
     const counts: Record<string, number> = {}
     allRoles.forEach(r => {
-      const cat = r?.category || 'Other'
-      counts[cat] = (counts[cat] || 0) + 1
+      const cats = getCategories(r)
+      cats.forEach(cat => {
+        counts[cat] = (counts[cat] || 0) + 1
+      })
     })
     return Object.entries(counts)
       .map(([name, count]) => ({ name, count }))
@@ -118,8 +126,10 @@ export function CareersFilterProvider({ allRoles, children }: { allRoles: Role[]
         return false
       })()
         
-      const matchesCategory = selectedCategories.length === 0 || 
-        selectedCategories.includes(role?.category || 'Other')
+      const matchesCategory = selectedCategories.length === 0 || (() => {
+        const cats = getCategories(role)
+        return cats.some(cat => selectedCategories.includes(cat))
+      })()
         
       return matchesSearch && matchesLocation && matchesCategory
     })

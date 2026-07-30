@@ -9,6 +9,12 @@ export interface Role {
   department: string
   /** Employment type. "Full-time" | "Part-time" | "Contract" | "Internship" */
   type: string
+  /** Work Type for display e.g. "Remote", "Hybrid", "On-site" */
+  workTypeDisplay: string
+  /** Raw work type string from Work_Type */
+  workType: string
+  /** Job_Type string from API used for apply form condition */
+  jobType: string
   /** City the role is based in. Use "Remote" for fully remote roles. */
   city: string
   /** Province (Canada) or state (US). */
@@ -21,6 +27,8 @@ export interface Role {
   jobId: string
   /** Job opening ID for display. */
   jobOpeningId: string
+  /** Location ID from job API */
+  locId?: string | number
   /** ISO date — YYYY-MM-DD. Shown in the hero. */
   postingStartDate: string
   /** Display string — e.g. "$55,000 to $75,000 base". */
@@ -41,10 +49,10 @@ export interface Role {
   relocationAssistance: boolean
   /** HTML description from API. */
   htmlDescription?: string
-  /** The specific work type to determine which application form to show. */
-  workType: 'remote' | 'hybrid'
-  /** Job Category for filtering. */
-  category: string
+  /** Job Category for filtering (string or array of strings). */
+  category: string | string[]
+  /** Industry (string or array of strings). */
+  industry?: string | string[]
 }
 
 interface ApiJob {
@@ -57,16 +65,19 @@ interface ApiJob {
   Country?: string
   slug: string
   Posting_Title?: string
-  Industry?: string
+  Industry?: string | string[]
   Job_Type?: string
   zoho_id?: string
   Date_Opened?: string
-  Role_Category?: string
+  Role_Category?: string | string[]
+  Job_Category?: string | string[]
   Job_Opening_ID?: string
+  location_id?: string | number
+  location_Id?: string | number
 }
 
 export async function fetchRolesFromApi(): Promise<Role[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_PORTAL_BASE_URL || 'https://portal.revun.com'
+  const baseUrl = process.env.NEXT_PUBLIC_PORTAL_BASE_URL || 'https://phpstack-1217932-6516253.cloudwaysapps.com'
   const url = `${baseUrl}/api/v1/job-postings?client_name=Rothenbury+Group`
   try {
     const res = await fetch(url, { next: { revalidate: 60 } })
@@ -101,14 +112,11 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
 
       // Clean up messy Zoho HTML artifacts (non-breaking spaces)
       rawHtml = rawHtml.replace(/&nbsp;/gi, ' ')
+      rawHtml = rawHtml.replace(/<br\s*\/?>\s*(?=<\/div>|<\/p>)/gi, '')
 
-      // 1. Convert standalone bold text to <h3> (handles <div><b>Text</b></div> or <br><b>Text</b><br>)
-      rawHtml = rawHtml.replace(/<(div|p)[^>]*>(?:\s|<br\s*\/?>)*(?:<b>|<strong>)(.*?)(?:<\/b>|<\/strong>)(?:\s|<br\s*\/?>)*<\/\1>/gi, '\n<h3>$2</h3>\n')
-      rawHtml = rawHtml.replace(/(<br\s*\/?>|\n|^)\s*(?:<b>|<strong>)(.*?)(?:<\/b>|<\/strong>)\s*(?=<br\s*\/?>|\n|$)/gi, '$1\n<h3>$2</h3>\n')
-
-      // 2. Convert plain text ending in colon (like "Requirements:") to <h3>
-      rawHtml = rawHtml.replace(/<(div|p)[^>]*>(?:\s|<br\s*\/?>)*([A-Za-z0-9 &\/,-]+):(?:\s|<br\s*\/?>)*<\/\1>/gi, '\n<h3>$2</h3>\n')
-      rawHtml = rawHtml.replace(/(<br\s*\/?>|\n|^)\s*([A-Za-z0-9 &\/,-]+):\s*(?=<br\s*\/?>|\n|$)/gi, '$1\n<h3>$2</h3>\n')
+      // 1. Convert section header patterns ending with colons (like "Requirements:") to <h3>
+      rawHtml = rawHtml.replace(/<(div|p)[^>]*>\s*(?:<b>|<strong>)?([A-Za-z0-9 &\/,-]{2,60}:)(?:<\/b>|<\/strong>)?\s*<\/\1>/gi, '\n<h3>$2</h3>\n')
+      rawHtml = rawHtml.replace(/(?:<br\s*\/?>|\n|^)\s*(?:<b>|<strong>)?([A-Za-z0-9 &\/,-]{2,60}:)(?:<\/b>|<\/strong>)?\s*(?=<br\s*\/?>|\n|$)/gi, '\n<h3>$1</h3>\n')
 
       // 3. Format plain text lists (- item or • item) into HTML <ul><li>
       rawHtml = rawHtml.replace(/(?:<div[^>]*>|<p[^>]*>|<br\s*\/?>|\n|^)\s*[-•]\s+(.*?)\s*(?:<\/div>|<\/p>|<br\s*\/?>|\n|$)/gi, '\n<li>$1</li>\n')
@@ -127,8 +135,11 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
         compensation = `${compensation}`
       }
 
-      const isRemote = job.Work_Type == null || String(job.Work_Type).toLowerCase() === 'remote/hybrid'
-      const workTypeSuffix = isRemote ? 'Remote' : 'Hybrid'
+      const workTypeRaw = job.Work_Type ? String(job.Work_Type).trim() : ''
+      const jobTypeRaw = job.Job_Type ? String(job.Job_Type).trim() : ''
+
+      const employmentTypeDisplay = workTypeRaw || 'Full-Time'
+      const workArrangementDisplay = jobTypeRaw || 'Remote'
 
       const locParts = []
       if (job.City) locParts.push(job.City)
@@ -136,20 +147,27 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
       if (job.Country) locParts.push(job.Country)
 
       const locationDisplay = locParts.length > 0
-        ? `${locParts.join(', ')} · ${workTypeSuffix}`
-        : workTypeSuffix
+        ? `${locParts.join(', ')} · ${workArrangementDisplay}`
+        : workArrangementDisplay
+
+      const industryVal = job.Industry || 'Careers'
+      const departmentDisplay = Array.isArray(industryVal) ? industryVal.join(', ') : industryVal
 
       return {
         slug: job.slug,
         title: job.Posting_Title || 'Untitled Role',
-        department: job.Industry || 'Careers',
-        type: job.Job_Type || 'Full time',
+        department: departmentDisplay,
+        type: employmentTypeDisplay,
+        workTypeDisplay: workArrangementDisplay,
+        workType: workArrangementDisplay,
+        jobType: employmentTypeDisplay,
         city: job.City || '',
         province: job.State || '',
         country: job.Country || '',
         locationDisplay,
         jobId: job.zoho_id || '',
         jobOpeningId: (job.Job_Opening_ID || '').replace(/ZR/g, 'RG'),
+        locId: job.location_id ?? job.location_Id ?? '',
         postingStartDate: job.Date_Opened ? job.Date_Opened.split('T')[0] : '',
         compensation,
         summary: '',
@@ -160,8 +178,8 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
         additionalInfo: null,
         relocationAssistance: false,
         htmlDescription: rawHtml,
-        workType: isRemote ? 'remote' : 'hybrid',
-        category: job.Role_Category || 'Other',
+        category: job.Role_Category || job.Job_Category || 'Other',
+        industry: job.Industry || '',
       }
     })
   } catch (error) {
