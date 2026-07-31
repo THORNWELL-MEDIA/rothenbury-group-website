@@ -330,7 +330,7 @@ export default async function CareerRolePage({ params }: RouteParams) {
               )}
 
               <div className="mt-12 flex flex-wrap gap-3 border-t border-ink/5 pt-10">
-                <ApplyButton role={role.title} jobId={role.jobId} jobOpeningId={role.jobOpeningId} workType={role.workType} />
+                <ApplyButton role={role.title} jobId={role.jobId} jobOpeningId={role.jobOpeningId} locId={role.locId} workType={role.workType} />
                 <Link
                   href="/careers/#positions"
                   className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full border border-navy/20 bg-white px-6 py-3 text-sm font-bold text-navy transition-colors hover:border-navy/40 hover:bg-bone no-underline"
