@@ -107,20 +107,73 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
 
       rawHtml = cleanStyles(rawHtml)
 
-      // Strip <font> tags but keep the content inside them
+      // Strip <font> and <span> tags but keep the content inside them
       rawHtml = rawHtml.replace(/<\/?font[^>]*>/gi, '')
+      rawHtml = rawHtml.replace(/<\/?span[^>]*>/gi, '')
 
       // Clean up messy Zoho HTML artifacts (non-breaking spaces)
       rawHtml = rawHtml.replace(/&nbsp;/gi, ' ')
       rawHtml = rawHtml.replace(/<br\s*\/?>\s*(?=<\/div>|<\/p>)/gi, '')
 
-      // 1. Convert section header patterns ending with colons (like "Requirements:") to <h3>
-      rawHtml = rawHtml.replace(/<(div|p)[^>]*>\s*(?:<b>|<strong>)?([A-Za-z0-9 &\/,-]{2,60}:)(?:<\/b>|<\/strong>)?\s*<\/\1>/gi, '\n<h3>$2</h3>\n')
-      rawHtml = rawHtml.replace(/(?:<br\s*\/?>|\n|^)\s*(?:<b>|<strong>)?([A-Za-z0-9 &\/,-]{2,60}:)(?:<\/b>|<\/strong>)?\s*(?=<br\s*\/?>|\n|$)/gi, '\n<h3>$1</h3>\n')
+      // Strip any paragraph or div whose text content is empty / whitespace
+      rawHtml = rawHtml.replace(/<(p|div)[^>]*>(.*?)(?:<\/p>|<\/div>)/gi, (fullMatch, tag, inner) => {
+        const text = inner.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim()
+        if (text.length === 0) {
+          return ''
+        }
+        return fullMatch
+      })
+      rawHtml = rawHtml.replace(/(?:<br\s*\/?>\s*){2,}/gi, '<br>')
 
-      // 3. Format plain text lists (- item or • item) into HTML <ul><li>
-      rawHtml = rawHtml.replace(/(?:<div[^>]*>|<p[^>]*>|<br\s*\/?>|\n|^)\s*[-•]\s+(.*?)\s*(?:<\/div>|<\/p>|<br\s*\/?>|\n|$)/gi, '\n<li>$1</li>\n')
+      // 1. Convert standalone bold section titles (in paragraphs or break lines) to <h3>
+      const isHeadingText = (text: string) => {
+        const trimmed = text.replace(/&nbsp;/g, ' ').trim()
+        if (trimmed.length < 2 || trimmed.length > 85) return false
+        if (trimmed.endsWith('.')) return false
+        if (/^[-•*\d]/i.test(trimmed)) return false
+        if (/\d+\s*(gb|mbps|ram|years)/i.test(trimmed)) return false
+        // Exclude meta key labels like EST HOURS REQUIRED, LOCATION, PAY, etc.
+        if (/^(est|hours|pay|location|salary|job type|work type|note|ref|id)\b/i.test(trimmed)) return false
+        return true
+      }
+
+      // Convert <p><b>Heading</b><br>Followup text...</p> into <h3>Heading</h3><p>Followup text...</p>
+      rawHtml = rawHtml.replace(/<(div|p)[^>]*>\s*(?:<b>|<strong>)\s*([^<]{2,85}?)\s*(?:<\/b>|<\/strong>)\s*<br\s*\/?>([\s\S]*?)<\/\1>/gi, (match, tag, headingText, rest) => {
+        const cleanHeading = headingText.replace(/&nbsp;/g, ' ').trim()
+        if (isHeadingText(cleanHeading)) {
+          const cleanRest = rest.trim()
+          return `\n<h3>${cleanHeading}</h3>\n${cleanRest ? `<p>${cleanRest}</p>` : ''}`
+        }
+        return match
+      })
+
+      // Convert standalone <p><b>Heading</b></p> into <h3>Heading</h3>
+      rawHtml = rawHtml.replace(/<(div|p)[^>]*>\s*(?:<b>|<strong>)\s*([^<]{2,85}?)\s*(?:<\/b>|<\/strong>)\s*<\/\1>/gi, (match, tag, headingText) => {
+        const cleanHeading = headingText.replace(/&nbsp;/g, ' ').trim()
+        if (isHeadingText(cleanHeading)) {
+          return `\n<h3>${cleanHeading}</h3>\n`
+        }
+        return match
+      })
+
+      // Convert bold heading at start of break/newline: <b>Heading</b><br>
+      rawHtml = rawHtml.replace(/(?:<br\s*\/?>|\n|^)\s*(?:<b>|<strong>)\s*([^<]{2,85}?)\s*(?:<\/b>|<\/strong>)\s*(?=<br\s*\/?>|\n|$)/gi, (match, headingText) => {
+        const cleanText = headingText.replace(/&nbsp;/g, ' ').trim()
+        if (isHeadingText(cleanText)) {
+          return `\n<h3>${cleanText}</h3>\n`
+        }
+        return match
+      })
+
+      // 3. Format plain text lists (- item, • item, * item) into HTML <ul><li>
+      rawHtml = rawHtml.replace(/(?:<div[^>]*>|<p[^>]*>|<br\s*\/?>|\n|^)\s*[-•*]\s+(.*?)\s*(?:<\/div>|<\/p>|<br\s*\/?>|\n|$)/gi, '\n<li>$1</li>\n')
       rawHtml = rawHtml.replace(/(?:\n*<li>.*?<\/li>\n*)+/g, (match) => `\n<ul>${match}</ul>\n`)
+
+      // Clean up headings inside list items so list items never render as section headings
+      rawHtml = rawHtml.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (match, inner) => {
+        const cleanedInner = inner.replace(/<\/?h[1-6][^>]*>/gi, (tag: string) => (tag.startsWith('</') ? '</b>' : '<b>'))
+        return match.replace(inner, cleanedInner)
+      })
 
       const hidePay =
         job.Pay_Disclosure === 'Do not disclose pay' ||
