@@ -41,17 +41,17 @@ export const NAP: {
   website: string;
 } = {
   name: "Rothenbury Group",
-  street: "Office of the Group",
+  street: "120 Adelaide St W, Suite 2508",
   city: "Toronto",
   region: "Ontario",
-  postalCode: "",
+  postalCode: "M5H 1T1",
   country: "Canada",
   // Phone is intentionally not published. Institutional inquiries route through
   // the contact form. Keep TBD so the visibility check in the header / footer
   // / sticky-CTA hides the phone affordance entirely.
   phoneE164: TBD,
   phoneDisplay: TBD,
-  email: "office@rothenbury.com",
+  email: "",
   website: "https://www.rothenbury.com",
 };
 

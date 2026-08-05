@@ -149,14 +149,14 @@ export default function ContactPage() {
                     </a>
                   </li>
                 ) : null}
-                {emailVisible ? (
+                {/* {emailVisible ? (
                   <li className="flex items-center gap-3">
                     <Mail className="w-4 h-4 text-ink-soft flex-shrink-0" strokeWidth={1.5} />
                     <a href={`mailto:${NAP.email}`} className="text-navy no-underline">
                       {NAP.email}
                     </a>
                   </li>
-                ) : null}
+                ) : null} */}
                 {!phoneVisible && !emailVisible ? (
                   <li className="flex items-start gap-3">
                     <Mail className="w-4 h-4 text-ink-soft mt-1 flex-shrink-0" strokeWidth={1.5} />
