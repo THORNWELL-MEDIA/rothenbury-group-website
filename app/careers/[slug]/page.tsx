@@ -6,7 +6,7 @@ import { ArrowLeft, Briefcase, Mail, MapPin } from 'lucide-react'
 import SchemaJsonLd from "@/components/SchemaJsonLd"
 import { breadcrumbSchema } from "@/lib/schema"
 import { getAllRoleSlugs, getRoleBySlug, type Role } from '@/lib/data/careers'
-import { ApplyButton } from './apply-button'
+import { ApplyButton, StickyApplyButton } from './apply-button'
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || 'https://www.rothenbury.com'
@@ -359,6 +359,9 @@ export default async function CareerRolePage({ params }: RouteParams) {
           </div>
         </div>
       </section>
+
+      {/* Mobile Sticky Apply Button */}
+      <StickyApplyButton role={role.title} jobId={role.jobId} jobOpeningId={role.jobOpeningId} locId={role.locId} workType={role.workType} />
     </main>
   )
 }
