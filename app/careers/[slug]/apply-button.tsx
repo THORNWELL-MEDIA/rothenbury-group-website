@@ -151,6 +151,46 @@ function ApplyModal({
       errors.resume = 'Please upload a resume'
     }
 
+    const isPortfolioRequiredRole = (() => {
+      if (!role) return false
+      const r = role.toLowerCase().trim()
+      return (
+        r.includes('ux/ui') ||
+        r.includes('ui/ux') ||
+        r.includes('video editor') ||
+        r.includes('graphics designer') ||
+        r.includes('graphic designer')
+      )
+    })()
+
+    if (isPortfolioRequiredRole) {
+      const portfolioFile = fd.get('attached_portfolio') as File | null
+      const hasPortfolio = Boolean(portfolioFile && portfolioFile.size > 0)
+
+      const behanceUrl = (fd.get('behance_url') as string || '').trim()
+      const hasBehance = behanceUrl.length > 0
+
+      if (!hasPortfolio && !hasBehance) {
+        errors.attached_portfolio = 'Please upload your portfolio or provide a Behance URL'
+        errors.behance_url = 'Please upload your portfolio or provide a Behance URL'
+      } else if (hasBehance) {
+        let urlToTest = behanceUrl
+        if (!/^https?:\/\//i.test(urlToTest)) {
+          urlToTest = 'https://' + urlToTest
+        }
+        try {
+          const urlObj = new URL(urlToTest)
+          if (!urlObj.hostname || !urlObj.hostname.includes('.')) {
+            errors.behance_url = 'Please enter a valid URL (e.g. https://behance.net/username)'
+          } else {
+            fd.set('behance_url', urlToTest)
+          }
+        } catch {
+          errors.behance_url = 'Please enter a valid URL (e.g. https://behance.net/username)'
+        }
+      }
+    }
+
     if (isRemoteForm) {
       const workedFromHome = fd.get('worked_from_home') as string
       if (!workedFromHome) errors.worked_from_home = 'This field is required'
@@ -694,6 +734,50 @@ function ApplyModal({
                           </div>
                         </>
                       )}
+
+                      {(() => {
+                        const isPortfolioRequiredRole = (() => {
+                          if (!role) return false
+                          const r = role.toLowerCase().trim()
+                          return (
+                            r.includes('ux/ui') ||
+                            r.includes('ui/ux') ||
+                            r.includes('video editor') ||
+                            r.includes('graphics designer') ||
+                            r.includes('graphic designer')
+                          )
+                        })()
+                        if (!isPortfolioRequiredRole) return null
+                        return (
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                              <label className="mb-1 block text-xs font-semibold text-ink/70">
+                                Attach Portfolio <span className="text-red-500">*</span>
+                              </label>
+                              <input
+                                name="attached_portfolio"
+                                type="file"
+                                accept=".pdf,.doc,.docx,.zip,.rar,.png,.jpg,.jpeg"
+                                className={`w-full rounded-lg border ${fieldErrors['attached_portfolio'] ? 'border-red-500' : 'border-ink/20'} bg-bone/30 px-3 py-2 text-sm file:mr-4 file:rounded-full file:border-0 file:bg-gold-600/10 file:px-4 file:py-1 file:text-xs file:font-semibold file:text-gold-600 hover:file:bg-gold-600/20 focus:outline-none focus:ring-2 focus:ring-gold-600`}
+                              />
+                              {fieldErrors['attached_portfolio'] && <p className="mt-1 text-xs text-red-500">{fieldErrors['attached_portfolio']}</p>}
+                            </div>
+
+                            <div>
+                              <label className="mb-1 block text-xs font-semibold text-ink/70">
+                                Behance URL <span className="text-red-500">*</span>
+                              </label>
+                              <input
+                                name="behance_url"
+                                type="url"
+                                className={getInputClass('behance_url')}
+                                placeholder="https://behance.net/username"
+                              />
+                              {fieldErrors['behance_url'] && <p className="mt-1 text-xs text-red-500">{fieldErrors['behance_url']}</p>}
+                            </div>
+                          </div>
+                        )
+                      })()}
 
                       <div>
                         <label className="mb-1 block text-xs font-semibold text-ink/70">
