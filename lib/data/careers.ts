@@ -190,8 +190,27 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
 
       const workTypeRaw = job.Work_Type ? String(job.Work_Type).trim() : ''
       const jobTypeRaw = job.Job_Type ? String(job.Job_Type).trim() : ''
+      const workTypeLower = workTypeRaw.toLowerCase()
+      const jobTypeLower = jobTypeRaw.toLowerCase()
 
-      const employmentTypeDisplay = workTypeRaw || 'Full-Time'
+      const isRemote = jobTypeLower.includes('remote')
+      const isContract = jobTypeLower.includes('contract')
+
+      let employmentTypeDisplay = workTypeRaw || 'Full-Time'
+      if (isRemote) {
+        if (workTypeRaw && !workTypeLower.includes('remote')) {
+          employmentTypeDisplay = `${workTypeRaw} · ${jobTypeRaw || 'Remote'}`
+        } else {
+          employmentTypeDisplay = jobTypeRaw || 'Remote'
+        }
+      } else if (isContract) {
+        if (workTypeRaw && !workTypeLower.includes('contract')) {
+          employmentTypeDisplay = `${workTypeRaw} · ${jobTypeRaw || 'Contract'}`
+        } else {
+          employmentTypeDisplay = jobTypeRaw || 'Contract'
+        }
+      }
+
       const workArrangementDisplay = jobTypeRaw
 
       const locParts = []
@@ -199,9 +218,16 @@ export async function fetchRolesFromApi(): Promise<Role[]> {
       if (job.State) locParts.push(job.State)
       if (job.Country) locParts.push(job.Country)
 
-      const locationDisplay = locParts.length > 0
-        ? (workArrangementDisplay ? `${locParts.join(', ')} · ${workArrangementDisplay}` : locParts.join(', '))
-        : (workArrangementDisplay || 'Remote')
+      const jobTypeSuffix = !isRemote && !isContract && jobTypeRaw ? jobTypeRaw : ''
+
+      let locationDisplay = ''
+      if (locParts.length > 0) {
+        locationDisplay = jobTypeSuffix
+          ? `${locParts.join(', ')} · ${jobTypeSuffix}`
+          : locParts.join(', ')
+      } else {
+        locationDisplay = jobTypeSuffix || 'Remote'
+      }
 
       const industryVal = job.Industry || 'Careers'
       const departmentDisplay = Array.isArray(industryVal) ? industryVal.join(', ') : industryVal
