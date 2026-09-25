@@ -5,6 +5,8 @@ import { createPortal } from 'react-dom'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import PhoneInput, { isValidPhoneNumber, type Country } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
+import { CityLocationInput } from '@/components/CityLocationInput'
+import type { LocationItem } from '@/lib/location-search'
 
 interface Props {
   role: string
@@ -82,6 +84,7 @@ function ApplyModal({
   const [countryCode, setCountryCode] = useState<string>('US')
   const [businessType, setBusinessType] = useState('')
   const [hasVehicle, setHasVehicle] = useState('')
+  const [selectedLocation, setSelectedLocation] = useState<LocationItem | null>(null)
 
   useEffect(() => {
     fetch('https://ipapi.co/json/')
@@ -144,6 +147,10 @@ function ApplyModal({
 
     if (!phone || !isValidPhoneNumber(phone)) {
       errors.phone = 'Please enter a valid phone number'
+    }
+
+    if (!selectedLocation) {
+      errors.residential_location = 'Please select your city or province from the list'
     }
 
     const resume = fd.get('resume') as File | null
@@ -257,6 +264,17 @@ function ApplyModal({
 
     // Process mobile
     fd.set('mobile', phone)
+
+    // Append resolved location fields
+    if (selectedLocation) {
+      fd.set('city', selectedLocation.city)
+      fd.set('state', selectedLocation.state)
+      fd.set('province', selectedLocation.province)
+      fd.set('state_province', selectedLocation.state_province)
+      fd.set('country', selectedLocation.country)
+      fd.set('country_code', selectedLocation.country_code)
+      fd.set('residential_location', selectedLocation.residential_location)
+    }
 
     const baseUrl = process.env.NEXT_PUBLIC_PORTAL_BASE_URL || 'https://phpstack-1217932-6516253.cloudwaysapps.com'
 
@@ -460,6 +478,31 @@ function ApplyModal({
                           </div>
                           {fieldErrors['phone'] && <p className="mt-1 text-xs text-red-500">{fieldErrors['phone']}</p>}
                         </div>
+                      </div>
+
+                      <div>
+                        <CityLocationInput
+                          value={selectedLocation}
+                          onChange={(loc) => {
+                            setSelectedLocation(loc)
+                            if (loc) {
+                              setFieldErrors((prev) => {
+                                const copy = { ...prev }
+                                delete copy.residential_location
+                                return copy
+                              })
+                            }
+                          }}
+                          error={fieldErrors['residential_location']}
+                          required
+                        />
+                        <input type="hidden" name="city" value={selectedLocation?.city || ''} />
+                        <input type="hidden" name="state" value={selectedLocation?.state || ''} />
+                        <input type="hidden" name="province" value={selectedLocation?.province || ''} />
+                        <input type="hidden" name="state_province" value={selectedLocation?.state_province || ''} />
+                        <input type="hidden" name="country" value={selectedLocation?.country || ''} />
+                        <input type="hidden" name="country_code" value={selectedLocation?.country_code || ''} />
+                        <input type="hidden" name="residential_location" value={selectedLocation?.residential_location || ''} />
                       </div>
 
                       {isRemoteForm && (
